@@ -1,0 +1,40 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+  
+  .boxStyle {
+    width: 664px;
+    max-height: 664px;
+    margin-top:169px;
+    background-color: black;
+    border: 2px solid rgb(255, 255, 255);
+    border-radius: 10px;
+    color: #ffffff;
+    padding: 10px;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  }
+  
+  .tableStyle {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .centered {
+    text-align: left;
+  }
+  
+  .rightAligned {
+    text-align: right;
+    padding-right: 15px;
+  }
+  

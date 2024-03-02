@@ -1,3 +1,9 @@
+body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 .typing-game-container {
   display: flex;
   flex-direction: column;
@@ -7,27 +13,24 @@
 
 .game-title {
   font-size: 35px;
-  color: white; 
-  text-align: center; 
+  color: white;
+  text-align: center;
   margin-bottom: 20px;
-  text-shadow: 1px 0px 25px rgba(255, 255, 255, 1.0); 
-  
+  text-shadow: 1px 0px 25px rgba(255, 255, 255, 1.0);
 }
-
 
 .score-timer-container {
   display: flex;
   justify-content: space-between;
-  align-items: center; 
-  background-color: black; 
-  padding: 10px; 
-  border: 2px solid rgb(255, 255, 255); 
-  border-radius: 8px; 
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); 
+  align-items: center;
+  background-color: black;
+  padding: 10px;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
   margin-bottom: 20px;
   gap: 20px;
 }
-
 
 .columns-container {
   display: flex;
@@ -67,10 +70,12 @@
 }
 
 .game-canvas {
-  background-color: black; 
-  border: 2px solid rgb(255, 255, 255); 
-  border-radius: 10px; 
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); 
-  margin: 20px; 
-  padding: 10px; 
+  width: 664px;
+  height: 660px;
+  background-color: black;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+  margin: 20px;
+  padding: 10px;
 }
