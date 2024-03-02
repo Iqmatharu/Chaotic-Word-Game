@@ -1,41 +1,5 @@
-// import { useState } from 'react'
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-// import './App.css'
-
-// function App() {
-//   const [count, setCount] = useState(0)
-
-//   return (
-//     <>
-//       <div>
-//         <a href="https://vitejs.dev" target="_blank">
-//           <img src={viteLogo} className="logo" alt="Vite logo" />
-//         </a>
-//         <a href="https://react.dev" target="_blank">
-//           <img src={reactLogo} className="logo react" alt="React logo" />
-//         </a>
-//       </div>
-//       <h1>Vite + React</h1>
-//       <div className="card">
-//         <button onClick={() => setCount((count) => count + 1)}>
-//           count is {count}
-//         </button>
-//         <p>
-//           Edit <code>src/App.jsx</code> and save to test HMR
-//         </p>
-//       </div>
-//       <p className="read-the-docs">
-//         Click on the Vite and React logos to learn more
-//       </p>
-//     </>
-//   )
-// }
-
-// export default App
-
-
 import React, { useState, useEffect } from 'react';
+import './App.css'; // Import your CSS file
 
 const TypingGame = () => {
   const [score, setScore] = useState(0);
@@ -82,18 +46,33 @@ const TypingGame = () => {
   }, [timer, score]);
 
   return (
-    <div>
-      <div>Score: {score}</div>
-      <div>Time Left: {timer}s</div>
-      <div>
-        <button onClick={() => generateWord('left')}>{columns.left}</button>
-        <button onClick={() => generateWord('middle')}>{columns.middle}</button>
-        <button onClick={() => generateWord('right')}>{columns.right}</button>
+    <div className="typing-game-container">
+      <h1 className="game-title">Chaos Keys</h1>
+      <div className="score-timer-container">
+        <div className="score">Score: {score}</div>
+        <div className="timer">Time Left: {timer}s</div>
       </div>
-      <div>
-        <p onClick={() => handleWordClick('left', columns.left)}>{columns.left}</p>
-        <p onClick={() => handleWordClick('middle', columns.middle)}>{columns.middle}</p>
-        <p onClick={() => handleWordClick('right', columns.right)}>{columns.right}</p>
+      <div className="columns-container">
+        <button className="column" onClick={() => generateWord('left')}>
+          {columns.left}
+        </button>
+        <button className="column" onClick={() => generateWord('middle')}>
+          {columns.middle}
+        </button>
+        <button className="column" onClick={() => generateWord('right')}>
+          {columns.right}
+        </button>
+      </div>
+      <div className="words-container">
+        <p className="word" onClick={() => handleWordClick('left', columns.left)}>
+          {columns.left}
+        </p>
+        <p className="word" onClick={() => handleWordClick('middle', columns.middle)}>
+          {columns.middle}
+        </p>
+        <p className="word" onClick={() => handleWordClick('right', columns.right)}>
+          {columns.right}
+        </p>
       </div>
     </div>
   );

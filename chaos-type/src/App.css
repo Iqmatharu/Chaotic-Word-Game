@@ -1,42 +1,53 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.typing-game-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.game-title {
+  font-size: 28px;
+  margin-bottom: 20px;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.score-timer-container {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.columns-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
 }
 
-.card {
-  padding: 2em;
+.column {
+  width: 33%;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: #61dafb;
+  color: #fff;
 }
 
-.read-the-docs {
-  color: #888;
+.column:hover {
+  background-color: #4fa3d1;
+}
+
+.words-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.word {
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+}
+
+.word:hover {
+  text-decoration: underline;
 }
