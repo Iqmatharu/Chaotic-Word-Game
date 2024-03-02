@@ -1,0 +1,55 @@
+.typing-game-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+    place-items: center;
+  }
+  
+  .game-title {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  .score-timer-container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .columns-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+  }
+  
+  .column {
+    width: 33%;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border: none;
+    border-radius: 4px;
+    background-color: #61dafb;
+    color: #fff;
+  }
+  
+  .column:hover {
+    background-color: #4fa3d1;
+  }
+  
+  .words-container {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 20px;
+  }
+  
+  .word {
+    cursor: pointer;
+    font-size: 16px;
+    color: #555;
+  }
+  
+  .word:hover {
+    text-decoration: underline;
+  }
+  
