@@ -1,62 +1,76 @@
 .typing-game-container {
-    display: flex;
-    flex-direction: column;
-    margin: 0;
-    place-items: center;
-  }
-  
-  .game-title {
-    font-size: 28px;
-    margin-bottom: 20px;
-  }
-  
-  .score-timer-container {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-    gap: 20px;
-  }
-  
-  .columns-container {
-    display: flex;
-    justify-content: space-around;
-    width: 100%;
-  }
-  
-  .column {
-    width: 33%;
-    padding: 10px;
-    font-size: 16px;
-    cursor: pointer;
-    border: none;
-    border-radius: 4px;
-    background-color: #61dafb;
-    color: #fff;
-  }
-  
-  .column:hover {
-    background-color: #4fa3d1;
-  }
-  
-  .words-container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 20px;
-  }
-  
-  .word {
-    cursor: pointer;
-    font-size: 16px;
-    color: #555;
-  }
-  
-  .word:hover {
-    text-decoration: underline;
-  }
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  place-items: center;
+}
 
-  .game-canvas {
-    border: black;
-    border-width: 5px;
-    border-style: dashed;
-  }
+.game-title {
+  font-size: 35px;
+  color: white; 
+  text-align: center; 
+  margin-bottom: 20px;
+  text-shadow: 1px 0px 25px rgba(255, 255, 255, 1.0); 
   
+}
+
+
+.score-timer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center; 
+  background-color: black; 
+  padding: 10px; 
+  border: 2px solid rgb(255, 255, 255); 
+  border-radius: 8px; 
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); 
+  margin-bottom: 20px;
+  gap: 20px;
+}
+
+
+.columns-container {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
+
+.column {
+  width: 33%;
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border: none;
+  border-radius: 4px;
+  background-color: #61dafb;
+  color: #fff;
+}
+
+.column:hover {
+  background-color: #4fa3d1;
+}
+
+.words-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+}
+
+.word {
+  cursor: pointer;
+  font-size: 16px;
+  color: #555;
+}
+
+.word:hover {
+  text-decoration: underline;
+}
+
+.game-canvas {
+  background-color: black; 
+  border: 2px solid rgb(255, 255, 255); 
+  border-radius: 10px; 
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); 
+  margin: 20px; 
+  padding: 10px; 
+}

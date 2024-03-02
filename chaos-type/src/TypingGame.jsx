@@ -36,10 +36,26 @@ const TypingGame = () => {
   const handleKeyDown = (event) => {
     switch (event.key) {
       case 'ArrowLeft':
-        setUserPosition('left');
+        setUserPosition(prevPosition => {
+          if (prevPosition === 'middle') {
+            return 'left';
+          } else if (prevPosition === 'right') {
+            return 'middle';
+          } else {
+            return prevPosition;
+          }
+        });
         break;
       case 'ArrowRight':
-        setUserPosition('right');
+        setUserPosition(prevPosition => {
+          if (prevPosition === 'middle') {
+            return 'right';
+          } else if (prevPosition === 'left') {
+            return 'middle';
+          } else {
+            return prevPosition;
+          }
+        });
         break;
       default:
         break;
@@ -70,11 +86,34 @@ const TypingGame = () => {
   // }, [timer, score]);
 
 useEffect(() => {
+  const generateWordsForColumns = async () => {
+    const leftWord = await getRandomWord();
+    const middleWord = await getRandomWord();
+    const rightWord = await getRandomWord();
+
+    setColumns({
+      left: leftWord,
+      middle: middleWord,
+      right: rightWord,
+    });
+  };
+
+  generateWordsForColumns();
+}, []);
+
+useEffect(() => {
   const canvas = canvasRef.current;
   const ctx = canvas.getContext('2d');
 
-  // Draw columns and dotted lines
+  // Draw border around the canvas
+  ctx.strokeStyle = 'black';
+  ctx.lineWidth = 2;
+  ctx.strokeRect(0, 0, canvas.width, canvas.height);
+
+  // Clear the canvas
   ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Draw columns and dotted lines
   ctx.strokeStyle = 'black';
   ctx.setLineDash([5, 5]);
   ctx.lineWidth = 2;
@@ -97,17 +136,30 @@ useEffect(() => {
   ctx.setLineDash([]); // Reset line dash
   ctx.lineWidth = 1;
 
+  // Calculate the center position for the words
+  const wordCenterXLeft = columnWidth / 2;
+  const wordCenterXMiddle = 1.5 * columnWidth;
+  const wordCenterXRight = 2.5 * columnWidth;
+  const wordY = 30; // Fixed Y position at the top
+
+  // Draw words at the top of each column with a larger font size and centered
+  ctx.font = '20px Arial'; // Adjust the font size as needed
+
   // Draw words in the left column
-  ctx.fillText(columns.left, columnWidth / 2, 50);
+  const textWidthLeft = ctx.measureText(columns.left).width;
+  ctx.fillText(columns.left, wordCenterXLeft - textWidthLeft / 2, wordY);
 
   // Draw words in the middle column
-  ctx.fillText(columns.middle, 1.5 * columnWidth, 50);
+  const textWidthMiddle = ctx.measureText(columns.middle).width;
+  ctx.fillText(columns.middle, wordCenterXMiddle - textWidthMiddle / 2, wordY);
 
   // Draw words in the right column
-  ctx.fillText(columns.right, 2.5 * columnWidth, 50);
+  const textWidthRight = ctx.measureText(columns.right).width;
+  ctx.fillText(columns.right, wordCenterXRight - textWidthRight / 2, wordY);
 
-  // Draw user character at the bottom of the middle column
-  const userX = 1.5 * columnWidth;
+
+  // Draw user character at the bottom of the current column
+  const userX = userPosition === 'left' ? columnWidth / 2 : (userPosition === 'middle' ? 1.5 * columnWidth : 2.5 * columnWidth);
   const userY = canvas.height - 30;
   ctx.fillStyle = 'red';
   ctx.fillRect(userX - 15, userY - 15, 30, 30);
