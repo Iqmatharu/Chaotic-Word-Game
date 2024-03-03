@@ -3,7 +3,6 @@ import './TypingGame.css'; // Import your CSS file
 
 const TypingGame = () => {
   const [score, setScore] = useState(0);
-  const [timer, setTimer] = useState(60);
   const [columns, setColumns] = useState({
     left: [],
     middle: [],
@@ -186,7 +185,6 @@ const TypingGame = () => {
       <h1 className="game-title">Chaos Keys</h1>
       <div className="score-timer-container">
         <div className="score">Score: {score}</div>
-        <div className="timer">Time Left: {timer}s</div>
       </div>
       <canvas ref={canvasRef} width={600} height={600} className="game-canvas"></canvas>
       <input
