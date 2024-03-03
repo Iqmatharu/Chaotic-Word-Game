@@ -22,9 +22,16 @@ const TypingGame = () => {
 
   const generateWord = async (column) => {
     const word = await getRandomWord();
+  
+    // Calculate the Y position with even spacing
+    const verticalSpacing = 40; // Adjust the spacing as needed
+  
     setColumns((prevColumns) => ({
       ...prevColumns,
-      [column]: [{ id: Date.now(), word: word }, ...prevColumns[column]],
+      [column]: [
+        { id: Date.now(), word: word, y: 30 },
+        ...prevColumns[column].map((item) => ({ ...item, y: item.y + verticalSpacing })),
+      ],
     }));
   };
 
@@ -77,14 +84,15 @@ const TypingGame = () => {
       const leftWord = await getRandomWord();
       const middleWord = await getRandomWord();
       const rightWord = await getRandomWord();
-
+  
+      // Include initial Y position for the words
       setColumns({
-        left: [{ id: Date.now(), word: leftWord }],
-        middle: [{ id: Date.now(), word: middleWord }],
-        right: [{ id: Date.now(), word: rightWord }],
+        left: [{ id: Date.now(), word: leftWord, y: 30 }],
+        middle: [{ id: Date.now(), word: middleWord, y: 30 }],
+        right: [{ id: Date.now(), word: rightWord, y: 30 }],
       });
     };
-
+  
     generateWordsForColumns();
   }, []);
 
@@ -99,74 +107,82 @@ const TypingGame = () => {
   }, []);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    const ctx = canvas.getContext('2d');
-
-    // Draw border around the canvas
-    ctx.strokeStyle = 'black';
-    ctx.lineWidth = 2;
-    ctx.strokeRect(0, 0, canvas.width, canvas.height);
-
-    // Clear the canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw columns and dotted lines
-    ctx.strokeStyle = 'black';
-    ctx.setLineDash([5, 5]);
-    ctx.lineWidth = 2;
-
-    const columnWidth = canvas.width / 3;
-
-    // Draw left column
-    ctx.beginPath();
-    ctx.moveTo(columnWidth, 0);
-    ctx.lineTo(columnWidth, canvas.height);
-    ctx.stroke();
-
-    // Draw right column
-    ctx.beginPath();
-    ctx.moveTo(2 * columnWidth, 0);
-    ctx.lineTo(2 * columnWidth, canvas.height);
-    ctx.stroke();
-
-    // Draw words in each column
-    ctx.setLineDash([]); // Reset line dash
-    ctx.lineWidth = 1;
-
-    // Calculate the center position for the words
-    const wordCenterXLeft = columnWidth / 2;
-    const wordCenterXMiddle = 1.5 * columnWidth;
-    const wordCenterXRight = 2.5 * columnWidth;
-    const wordY = 30; // Fixed Y position at the top
-
-    // Draw words at the top of each column with a larger font size and centered
-    ctx.font = '20px Arial'; // Adjust the font size as needed
-
-    // Draw words in the left column
-    columns.left.forEach(({ id, word }, index) => {
-      const textWidth = ctx.measureText(word).width;
-      ctx.fillText(word, wordCenterXLeft - textWidth / 2, wordY + index * 30);
-    });
-
-    // Draw words in the middle column
-    columns.middle.forEach(({ id, word }, index) => {
-      const textWidth = ctx.measureText(word).width;
-      ctx.fillText(word, wordCenterXMiddle - textWidth / 2, wordY + index * 30);
-    });
-
-    // Draw words in the right column
-    columns.right.forEach(({ id, word }, index) => {
-      const textWidth = ctx.measureText(word).width;
-      ctx.fillText(word, wordCenterXRight - textWidth / 2, wordY + index * 30);
-    });
-
-    // Draw user character at the bottom of the current column
-    const userX =
-      userPosition === 'left' ? columnWidth / 2 : userPosition === 'middle' ? 1.5 * columnWidth : 2.5 * columnWidth;
-    const userY = canvas.height - 30;
-    ctx.fillStyle = 'red';
-    ctx.fillRect(userX - 15, userY - 15, 30, 30);
+      const canvas = canvasRef.current;
+      const ctx = canvas.getContext('2d');
+    
+      // Draw border around the canvas
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(0, 0, canvas.width, canvas.height);
+    
+      // Clear the canvas
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+      // Draw columns and dotted lines
+      ctx.strokeStyle = 'black';
+      ctx.setLineDash([5, 5]);
+      ctx.lineWidth = 2;
+    
+      const columnWidth = canvas.width / 3;
+    
+      // Draw left column
+      ctx.beginPath();
+      ctx.moveTo(columnWidth, 0);
+      ctx.lineTo(columnWidth, canvas.height);
+      ctx.stroke();
+    
+      // Draw right column
+      ctx.beginPath();
+      ctx.moveTo(2 * columnWidth, 0);
+      ctx.lineTo(2 * columnWidth, canvas.height);
+      ctx.stroke();
+    
+      // Draw words in each column
+      ctx.setLineDash([]); // Reset line dash
+      ctx.lineWidth = 1;
+    
+      // Calculate the center position for the words
+      const wordCenterXLeft = columnWidth / 2;
+      const wordCenterXMiddle = 1.5 * columnWidth;
+      const wordCenterXRight = 2.5 * columnWidth;
+      const wordY = 30; // Fixed Y position at the top
+    
+      // Draw words at the top of each column with a larger font size and centered
+      ctx.font = '20px Arial'; // Adjust the font size as needed
+    
+      // Draw words in the left column
+      columns.left.forEach(({ id, word, y }) => {
+        const textWidth = ctx.measureText(word).width;
+        ctx.fillText(word, wordCenterXLeft - textWidth / 2, y);
+      });
+    
+      // Draw words in the middle column
+      columns.middle.forEach(({ id, word, y }) => {
+        const textWidth = ctx.measureText(word).width;
+        ctx.fillText(word, wordCenterXMiddle - textWidth / 2, y);
+      });
+    
+      // Draw words in the right column
+      columns.right.forEach(({ id, word, y }) => {
+        const textWidth = ctx.measureText(word).width;
+        ctx.fillText(word, wordCenterXRight - textWidth / 2, y);
+      });
+    
+      // Draw user character at the bottom of the current column
+      const userX =
+        userPosition === 'left' ? columnWidth / 2 : userPosition === 'middle' ? 1.5 * columnWidth : 2.5 * columnWidth;
+      const userY = canvas.height - 30;
+      ctx.fillStyle = 'red';
+      ctx.fillRect(userX - 15, userY - 15, 30, 30);
+    
+      // Check and remove words that reach the player's position
+      const updatedColumns = { ...columns };
+      Object.keys(updatedColumns).forEach((column) => {
+        updatedColumns[column] = updatedColumns[column].filter((item) => item.y < userY - 30);
+      });
+      setColumns(updatedColumns);
   }, [columns, userPosition]);
+    
 
   return (
     <div className="typing-game-container">
