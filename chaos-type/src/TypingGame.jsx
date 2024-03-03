@@ -24,7 +24,7 @@ const TypingGame = () => {
     const word = await getRandomWord();
     setColumns((prevColumns) => ({
       ...prevColumns,
-      [column]: [...prevColumns[column], { id: Date.now(), word: word }],
+      [column]: [{ id: Date.now(), word: word }, ...prevColumns[column]],
     }));
   };
 
@@ -53,6 +53,15 @@ const TypingGame = () => {
 
   const handleInputChange = (event) => {
     setUserInput(event.target.value);
+    if (event.key === 'Enter') {
+      const inputWord = userInput.trim().toLowerCase();
+      const updatedColumns = { ...columns };
+      Object.keys(updatedColumns).forEach((column) => {
+        updatedColumns[column] = updatedColumns[column].filter((item) => item.word.toLowerCase() !== inputWord);
+      });
+      setColumns(updatedColumns);
+      setUserInput('');
+    }
   };
 
   useEffect(() => {
@@ -84,7 +93,7 @@ const TypingGame = () => {
       generateWord('left');
       generateWord('middle');
       generateWord('right');
-    }, 5000);
+    }, 2000);
 
     return () => clearInterval(intervalId);
   }, []);
@@ -152,7 +161,8 @@ const TypingGame = () => {
     });
 
     // Draw user character at the bottom of the current column
-    const userX = userPosition === 'left' ? columnWidth / 2 : userPosition === 'middle' ? 1.5 * columnWidth : 2.5 * columnWidth;
+    const userX =
+      userPosition === 'left' ? columnWidth / 2 : userPosition === 'middle' ? 1.5 * columnWidth : 2.5 * columnWidth;
     const userY = canvas.height - 30;
     ctx.fillStyle = 'red';
     ctx.fillRect(userX - 15, userY - 15, 30, 30);
