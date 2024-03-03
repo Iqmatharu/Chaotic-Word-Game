@@ -4,21 +4,18 @@ import './Leaderboard.css'; // Import your CSS file
 const Leaderboard = () => {
   const [leaderboardData, setLeaderboardData] = useState([]);
 
-  // Mock data, replace this with actual data fetching logic
   const fetchLeaderboardData = () => {
-    // Simulating an API call or fetching data from a database
     const mockData = [
       { player: 'John Doe', score: 100 },
       { player: 'Jane Smith', score: 90 },
-      { player: 'Bob Johnson', score: 80 },
-      // Add more entries as needed
+      { player: 'Bob Johnson', score: 80 }
+      ,
     ];
 
     setLeaderboardData(mockData);
   };
 
   useEffect(() => {
-    // Fetch leaderboard data when the component mounts
     fetchLeaderboardData();
   }, []);
 

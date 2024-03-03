@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './TypingGame.css'; // Import your CSS file
+import './TypingGame.css'; 
 
 const TypingGame = () => {
   const [score, setScore] = useState(0);
@@ -8,9 +8,9 @@ const TypingGame = () => {
     middle: [],
     right: [],
   });
-  const [userPosition, setUserPosition] = useState('middle'); // User starts in the middle
+  const [userPosition, setUserPosition] = useState('middle');
   const [userInput, setUserInput] = useState('');
-  const [timer, setTimer] = useState(60); // Added timer state
+  const [timer, setTimer] = useState(60); 
 
   const canvasRef = useRef(null);
 
@@ -69,9 +69,9 @@ const TypingGame = () => {
           if (item.word.toLowerCase() === inputWord) {
             wordFound = true;
             setScore((prevScore) => prevScore + 1);
-            return false; // Remove the word from the column
+            return false; 
           }
-          return true; // Keep other words in the column
+          return true; 
         });
       });
 
@@ -125,7 +125,6 @@ const TypingGame = () => {
 
       return () => clearInterval(timerId);
     } else {
-      // Display score when timer reaches 0
       alert(`Game Over! Your score is ${score}`);
     }
   }, [timer, score]);
