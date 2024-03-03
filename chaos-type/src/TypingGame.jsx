@@ -10,6 +10,7 @@ const TypingGame = () => {
   });
   const [userPosition, setUserPosition] = useState('middle'); // User starts in the middle
   const [userInput, setUserInput] = useState('');
+  const [timer, setTimer] = useState(60); // Added timer state
 
   const canvasRef = useRef(null);
 
@@ -117,6 +118,19 @@ const TypingGame = () => {
   }, []);
 
   useEffect(() => {
+    if (timer > 0) {
+      const timerId = setInterval(() => {
+        setTimer((prevTimer) => prevTimer - 1);
+      }, 1000);
+
+      return () => clearInterval(timerId);
+    } else {
+      // Display score when timer reaches 0
+      alert(`Game Over! Your score is ${score}`);
+    }
+  }, [timer, score]);
+
+  useEffect(() => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
 
@@ -185,6 +199,7 @@ const TypingGame = () => {
       <h1 className="game-title">Chaos Keys</h1>
       <div className="score-timer-container">
         <div className="score">Score: {score}</div>
+        <div className="timer">Time: {timer}s</div>
       </div>
       <canvas ref={canvasRef} width={600} height={600} className="game-canvas"></canvas>
       <input
