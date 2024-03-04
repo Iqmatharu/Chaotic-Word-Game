@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import './TypingGame.css'; 
+import './TypingGame.css';
 
 const TypingGame = () => {
   const [score, setScore] = useState(0);
@@ -10,7 +10,9 @@ const TypingGame = () => {
   });
   const [userPosition, setUserPosition] = useState('middle');
   const [userInput, setUserInput] = useState('');
-  const [timer, setTimer] = useState(60); 
+  const [timer, setTimer] = useState(11);
+  const [gameOver, setGameOver] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const canvasRef = useRef(null);
 
@@ -19,6 +21,7 @@ const TypingGame = () => {
     const data = await response.json();
     return data[0] || '';
   };
+  
 
   const generateWord = async (column) => {
     const word = await getRandomWord();
@@ -34,14 +37,18 @@ const TypingGame = () => {
     }));
   };
 
-  const handleWordClick = (column, word) => {
-    const userInput = prompt(`Type the word "${word}" to earn a point:`);
-
-    if (userInput && userInput.toLowerCase() === word.toLowerCase()) {
-      setScore((prevScore) => prevScore + 1);
-      const updatedColumn = columns[column].filter((item) => item.word !== word);
-      setColumns((prevColumns) => ({ ...prevColumns, [column]: updatedColumn }));
-    }
+  const resetGame = () => {
+    setColumns({
+      left: [],
+      middle: [],
+      right: [],
+    });
+    setUserPosition('middle');
+    setUserInput('');
+    setScore(0);
+    setTimer(60);
+    setGameOver(false);
+    setShowModal(false); // Hide the modal
   };
 
   const handleKeyDown = (event) => {
@@ -59,30 +66,45 @@ const TypingGame = () => {
 
   const handleInputChange = (event) => {
     setUserInput(event.target.value);
+  
     if (event.key === 'Enter') {
       const inputWord = userInput.trim().toLowerCase();
       let wordFound = false;
-
-      const updatedColumns = { ...columns };
-      Object.keys(updatedColumns).forEach((column) => {
-        updatedColumns[column] = updatedColumns[column].filter((item) => {
-          if (item.word.toLowerCase() === inputWord) {
-            wordFound = true;
-            setScore((prevScore) => prevScore + 1);
-            return false; 
-          }
-          return true; 
-        });
-      });
-
-      if (wordFound) {
-        setColumns(updatedColumns);
-      }
-
+  
+      const updatedColumns = Object.fromEntries(
+        Object.entries(columns).map(([column, items]) => [
+          column,
+          items.map((item) => {
+            if (item.word.toLowerCase() === inputWord) {
+              // Word is correct
+              setScore((prevScore) => prevScore + 1);
+              wordFound = true;
+  
+              // Update the item's word to indicate earning a point
+              return { ...item, word: '+1 point earned', earned: true };
+            }
+            return item;
+          }),
+        ])
+      );
+  
+      setColumns(updatedColumns);
       setUserInput('');
+  
+      if (wordFound) {
+      } else {
+        // Word is incorrect, add shake effect to the input box
+        const inputElement = document.getElementById('user-input');
+        inputElement.classList.add('shake');
+  
+        // Remove the shake class after the animation ends
+        setTimeout(() => {
+          inputElement.classList.remove('shake');
+        }, 400);
+      }
     }
   };
-
+  
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
 
@@ -112,22 +134,24 @@ const TypingGame = () => {
       generateWord('left');
       generateWord('middle');
       generateWord('right');
-    }, 2000);
+    }, 1000);
 
     return () => clearInterval(intervalId);
   }, []);
 
   useEffect(() => {
-    if (timer > 0) {
+    if (timer > 0 && !gameOver) {
       const timerId = setInterval(() => {
         setTimer((prevTimer) => prevTimer - 1);
       }, 1000);
-
+  
       return () => clearInterval(timerId);
-    } else {
-      alert(`Game Over! Your score is ${score}`);
+    } else if (timer === 0 && !gameOver) {
+      setGameOver(true);
+      setShowModal(true); // Display the modal
     }
-  }, [timer, score]);
+  }, [timer, gameOver]);
+  
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -163,7 +187,7 @@ const TypingGame = () => {
     const wordCenterXRight = 2.5 * columnWidth;
     const wordY = 30;
 
-    ctx.font = '20px Arial';
+    ctx.font = '30px Arial';
 
     columns.left.forEach(({ id, word, y }) => {
       const textWidth = ctx.measureText(word).width;
@@ -180,35 +204,66 @@ const TypingGame = () => {
       ctx.fillText(word, wordCenterXRight - textWidth / 2, y);
     });
 
-    const userX =
-      userPosition === 'left' ? columnWidth / 2 : userPosition === 'middle' ? 1.5 * columnWidth : 2.5 * columnWidth;
-    const userY = canvas.height - 30;
-    ctx.fillStyle = 'red';
-    ctx.fillRect(userX - 15, userY - 15, 30, 30);
+    const playerSize = 50;
+  const userX =
+    userPosition === 'left' ? columnWidth / 2 - playerSize / 2 :
+    userPosition === 'middle' ? 1.5 * columnWidth - playerSize / 2 :
+    2.5 * columnWidth - playerSize / 2;
+  const userY = canvas.height - 30 - playerSize / 2;
+  ctx.fillStyle = 'red';
+  ctx.fillRect(userX, userY, playerSize, playerSize);
 
-    const updatedColumns = { ...columns };
-    Object.keys(updatedColumns).forEach((column) => {
-      updatedColumns[column] = updatedColumns[column].filter((item) => item.y < userY - 30);
-    });
-    setColumns(updatedColumns);
+  const updatedColumns = { ...columns };
+  Object.keys(updatedColumns).forEach((column) => {
+    updatedColumns[column] = updatedColumns[column].filter((item) => item.y < userY - 30);
+  });
+
+  // Render "+1 point" in green
+  updatedColumns.left.forEach(({ id, word, y }) => {
+    const textWidth = ctx.measureText(word).width;
+    ctx.fillStyle = word === '+1 point earned' ? 'green' : 'red';
+    ctx.fillText(word, wordCenterXLeft - textWidth / 2, y);
+  });
+
+  updatedColumns.middle.forEach(({ id, word, y }) => {
+    const textWidth = ctx.measureText(word).width;
+    ctx.fillStyle = word === '+1 point earned' ? 'green' : 'red';
+    ctx.fillText(word, wordCenterXMiddle - textWidth / 2, y);
+  });
+
+  updatedColumns.right.forEach(({ id, word, y }) => {
+    const textWidth = ctx.measureText(word).width;
+    ctx.fillStyle = word === '+1 point earned' ? 'green' : 'red';
+    ctx.fillText(word, wordCenterXRight - textWidth / 2, y);
+  });
+
+  setColumns(updatedColumns);
+
   }, [columns, userPosition]);
 
   return (
     <div className="typing-game-container">
-      <h1 className="game-title">Chaos Keys</h1>
       <div className="score-timer-container">
         <div className="score">Score: {score}</div>
-        <div className="timer">Time: {timer}s</div>
+        <div className={`timer ${timer <= 10 ? 'occilation' : ''} ${timer <= 10 ? 'red-text' : ''}`}>Time: {timer}s</div>
       </div>
-      <canvas ref={canvasRef} width={600} height={600} className="game-canvas"></canvas>
       <input
+        id="user-input"
         type="text"
         value={userInput}
         onChange={handleInputChange}
         onKeyDown={handleInputChange}
-        placeholder="Type here..."
+        placeholder="Choose a word to type..."
         className="user-input"
       />
+      <canvas ref={canvasRef} width={1000} height={700} className="game-canvas"></canvas>
+
+      {showModal && (
+        <div className="modal">
+          <p>Congratulations! Your score is {score}</p>
+          <button onClick={resetGame}>Play Again</button>
+        </div>
+      )}
     </div>
   );
 };

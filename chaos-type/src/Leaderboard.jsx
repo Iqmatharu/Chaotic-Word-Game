@@ -6,9 +6,9 @@ const Leaderboard = () => {
 
   const fetchLeaderboardData = () => {
     const mockData = [
-      { player: 'John Doe', score: 100 },
-      { player: 'Jane Smith', score: 90 },
-      { player: 'Bob Johnson', score: 80 }
+      { player: 'User 1', score: 17 },
+      { player: 'User 2', score: 8 },
+      { player: 'User 3', score: 1 }
       ,
     ];
 
@@ -20,25 +20,25 @@ const Leaderboard = () => {
   }, []);
 
   return (
-    <div className="boxStyle">
-      <h2>Leaderboard</h2>
-      <table className="tableStyle">
-        <thead>
-          <tr>
-            <th className="centered">Player</th>
-            <th className="rightAligned">Score</th>
-          </tr>
-        </thead>
-        <tbody>
-          {leaderboardData.map((entry, index) => (
-            <tr key={index}>
-              <td className="centered">{entry.player}</td>
-              <td className="rightAligned">{entry.score}</td>
+      <div className="boxStyle">
+        <h2 className="title-leaderboard">Leaderboard</h2>
+        <table className="tableStyle">
+          <thead>
+            <tr>
+              <th className="centered">Player</th>
+              <th className="rightAligned">Score</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
+          </thead>
+          <tbody>
+            {leaderboardData.map((entry, index) => (
+              <tr key={index}>
+                <td className="centered">{entry.player}</td>
+                <td className="rightAligned">{entry.score}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
   );
 };
 

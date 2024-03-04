@@ -1,5 +1,45 @@
 .app-container {
   display: flex;
-  justify-content: center;
-  gap: 200px;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
 }
+
+.content-container {
+  display: flex;
+  grid-template-columns: repeat(1, 1fr);
+  gap: 50px;
+  /*flex-wrap: wrap; /* Allow items to wrap to the next line on small screens */
+}
+
+.leaderboard.game-canvas {
+  width: 100%; /* Take up 100% of the available width */
+}
+
+.game-title {
+  font-size: 60px;
+  font-weight: bold;
+  color: white;
+  text-align: center;
+  margin-bottom: 20px;
+  text-shadow: 1px 0px 25px rgba(255, 255, 255, 1.0);
+  animation: textShadowAnimation 1s linear infinite alternate, moveLeftRight 10s linear infinite;
+}
+
+@keyframes textShadowAnimation {
+  0% {
+    text-shadow: 1px 0px 20px rgba(255, 255, 255, 30);
+  }
+  100% {
+    text-shadow: 1px 0px 20px rgba(255, 0, 0, 30);
+  }
+}
+@keyframes moveLeftRight {
+  0%, 100% {
+    transform: translateX(-250px);
+  }
+  50% {
+    transform: translateX(250px); /* Adjust the distance of movement as needed */
+  }
+}
+
