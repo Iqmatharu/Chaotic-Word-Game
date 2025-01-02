@@ -10,16 +10,29 @@ const TypingGame = () => {
   });
   const [userPosition, setUserPosition] = useState('middle');
   const [userInput, setUserInput] = useState('');
-  const [timer, setTimer] = useState(11);
+  const [timer, setTimer] = useState(60);
   const [gameOver, setGameOver] = useState(false);
   const [showModal, setShowModal] = useState(false);
 
   const canvasRef = useRef(null);
 
+  //1st api
+  // const getRandomWord = async () => {
+  //   const response = await fetch('https://random-word-api.herokuapp.com/word');
+  //   const data = await response.json();
+  //   return data[0] || '';
+  // };
+
+  //2nd api
   const getRandomWord = async () => {
-    const response = await fetch('https://random-word-api.herokuapp.com/word');
-    const data = await response.json();
-    return data[0] || '';
+    try {
+      const response = await fetch('https://random-word-api.vercel.app/api?words=1');
+      const data = await response.json();
+      return data[0] || ''; // Ensure we return an empty string if no word is fetched
+    } catch (error) {
+      console.error('Error fetching word:', error);
+      return ''; // Return an empty string if there's an error
+    }
   };
   
 
@@ -211,7 +224,7 @@ const TypingGame = () => {
     2.5 * columnWidth - playerSize / 2;
   const userY = canvas.height - 30 - playerSize / 2;
   ctx.fillStyle = 'red';
-  ctx.fillRect(userX, userY, playerSize, playerSize);
+  // ctx.fillRect(userX, userY, playerSize, playerSize);
 
   const updatedColumns = { ...columns };
   Object.keys(updatedColumns).forEach((column) => {

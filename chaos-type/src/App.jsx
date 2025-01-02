@@ -9,7 +9,7 @@ const App = () => {
     <div className="app-container">
       <p className="game-title">Chaos Keys</p>
       <div className="content-container">
-        <Leaderboard />
+        {/* <Leaderboard /> */}
         <TypingGame />
       </div>
     </div>
