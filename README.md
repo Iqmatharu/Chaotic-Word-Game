@@ -12,10 +12,4 @@ And you can switch to other columns using arrow keys to type the words that pop 
 
 The difficulty of the game is that the interval of the words pop up are random and you can get big words
 
-The main goal is to type as many words as you can while you can only type in only one column and not let any words touch the bottom.
 
-We added a leaderboard and score counter for details.
-
-Some troubles we came across was aligning the both the game box and leaderboard box because it adjust based on aspect ratio.
-
-Additonally we struggled with order of the Arrays, getting the words to start from the top and the first word heading towards the red dot.
