@@ -1,4 +1,4 @@
-Chaos Keys
+# Chaos Keys
 
 Web Game made with Javascript, HTML, CSS, & React.
 
